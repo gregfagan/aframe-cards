@@ -1,0 +1,51 @@
+<a-scene physics vr-mode-ui="enabled: false">
+  <!-- camera -->
+  <a-entity rotation="-45 45 0">
+    <a-entity
+      position="0 0 1600"
+      raycaster="
+        near: 1000.0;
+        far: 4000.0;
+        interval: 0;
+      "
+      2d-cursor
+      crawling-cursor
+      camera="
+        fov: 0.5;
+        near: 1000.0;
+        far: 4000.0;
+        userHeight: 0.0;
+        zoom: 1.0;
+      "
+    ></a-entity>
+  </a-entity>
+
+  <!-- cursor -->
+  <a-cursor scale="20 20 1"></a-cursor>
+
+  <!-- floor -->
+  <a-plane width="10" height="10" rotation="-90 0 0" color="#585858" static-body></a-plane>
+
+  <!-- box -->
+  <a-box position="0 0.5 0" color="#66eee9" static-body></a-box>
+
+  <!-- physical object -->
+  <a-icosahedron
+    highlight-on-hover="#eeeeee"
+    position="-2 4 -2"
+    color="#ee6666"
+    material="flatShading: true"
+    dynamic-body="shape: hull"
+  ></a-icosahedron>
+
+  <!-- rotating sign -->
+  <a-text
+    rotation-engine="rpm: 6"
+    position="0 2 0"
+    wrap-count="11"
+    width="4"
+    value="Hello, world"
+    align="center"
+    side="double"
+  ></a-text>
+</a-scene>

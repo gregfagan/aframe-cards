@@ -1,0 +1,6 @@
+// This config applies to the webpack.config.babel.js file, which specifies a
+// different configuration for compiling the other modules
+{
+  "presets": ["env"],
+  "plugins": ["transform-object-rest-spread"]
+}
