@@ -5,19 +5,24 @@ import AFRAME, { registerComponent } from 'aframe'
 
 const { Vector2, Vector3, Quaternion } = AFRAME.THREE
 
-registerComponent('2d-cursor', {
-  dependencies: ['raycaster', 'camera'],
+registerComponent('screen-cursor', {
   schema: {},
 
   init() {
     this.pointerPosition = new Vector2()
     this.canvasRect = null
     this.eventListeners = null
-
-    this.generateEventListeners()
   },
 
   remove() {
+    this.removeEventListeners()
+  },
+
+  play() {
+    this.addEventListeners()
+  },
+
+  pause() {
     this.removeEventListeners()
   },
 
@@ -30,7 +35,7 @@ registerComponent('2d-cursor', {
     if (!canvas) {
       sceneEl.addEventListener(
         'render-target-loaded',
-        this.generateEventListeners.bind(this),
+        this.addEventListeners.bind(this),
       )
       return
     }
@@ -49,10 +54,14 @@ registerComponent('2d-cursor', {
     ]
 
     this.getCanvasRect()
-    this.addEventListeners()
   },
 
   addEventListeners() {
+    if (!this.eventListeners) {
+      this.generateEventListeners()
+      if (!this.eventListeners) return
+    }
+
     this.eventListeners.forEach(({ target, event, cb }) => {
       target.addEventListener(event, cb)
     })
@@ -89,7 +98,11 @@ registerComponent('2d-cursor', {
         .sub(position)
         .applyQuaternion(quaternion)
         .normalize()
-      el.setAttribute('raycaster', newAttribute)
+
+      // TODO: the second form here should be more performant, but it exposes a type
+      // checking bug in the AFrame Component `buildData` code. Explore further.
+      el.setAttribute('raycaster', 'direction', newAttribute.direction)
+      // el.setAttribute('raycaster', newAttribute)
     }
   })(),
 
@@ -126,7 +139,7 @@ registerComponent('2d-cursor', {
   },
 
   updatePointer(event) {
-    this.setPositionFromEvent(event, this.pointerPosition)
+    this.setPositionFromEvent(event)
     this.updateRaycaster()
   },
 

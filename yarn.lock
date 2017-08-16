@@ -41,16 +41,9 @@ acorn@^5.0.0, acorn@^5.0.1:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-5.1.1.tgz#53fe161111f912ab999ee887a90a0bc52822fd75"
 
-aframe-crawling-cursor@^1.0.7:
+"aframe-crawling-cursor@https://github.com/gregfagan/aframe-crawling-cursor":
   version "1.0.7"
-  resolved "https://registry.yarnpkg.com/aframe-crawling-cursor/-/aframe-crawling-cursor-1.0.7.tgz#5e14d44b752f8a980677cd6057b22d7c3b5c2ff6"
-
-aframe-physics-system@^1.4.2:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/aframe-physics-system/-/aframe-physics-system-1.4.3.tgz#c6927e847081bfe546658314aa4c04958ef27934"
-  dependencies:
-    cannon "github:donmccurdy/cannon.js#v0.6.2-dev1"
-    three-to-cannon "^1.1.1"
+  resolved "https://github.com/gregfagan/aframe-crawling-cursor#448277a73a813712fc2492b09a5df6b5096da5d8"
 
 aframe@^0.6.1:
   version "0.6.1"
@@ -977,10 +970,6 @@ caniuse-lite@^1.0.30000704:
   version "1.0.30000708"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000708.tgz#71dbf388c57f379b1bb66c89a890edc04c2509b6"
 
-"cannon@github:donmccurdy/cannon.js#v0.6.2-dev1":
-  version "0.6.2"
-  resolved "https://codeload.github.com/donmccurdy/cannon.js/tar.gz/022e8ba53fa83abf0ad8a0e4fd08623123838a17"
-
 caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
@@ -1314,7 +1303,7 @@ debug@2.6.8, debug@^2.1.1, debug@^2.2.0, debug@^2.6.6, debug@^2.6.8:
   dependencies:
     ms "2.0.0"
 
-"debug@github:ngokevin/debug#noTimestamp":
+debug@ngokevin/debug#noTimestamp:
   version "2.2.0"
   resolved "https://codeload.github.com/ngokevin/debug/tar.gz/ef5f8e66d49ce8bc64c6f282c15f8b7164409e3a"
 
@@ -1464,7 +1453,7 @@ doctrine@^2.0.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-"document-register-element@github:dmarcos/document-register-element#8ccc532b7":
+document-register-element@dmarcos/document-register-element#8ccc532b7:
   version "0.5.4"
   resolved "https://codeload.github.com/dmarcos/document-register-element/tar.gz/8ccc532b7"
 
@@ -4351,10 +4340,6 @@ three-buffer-vertex-data@^1.0.0:
   resolved "https://registry.yarnpkg.com/three-buffer-vertex-data/-/three-buffer-vertex-data-1.1.0.tgz#cf228e78427665884b961a4cabe1f85ed39f82b1"
   dependencies:
     flatten-vertex-data "^1.0.0"
-
-three-to-cannon@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/three-to-cannon/-/three-to-cannon-1.1.1.tgz#51bc612cb2fd7eef65a9998ae112726122e63cd5"
 
 three@^0.84.0:
   version "0.84.0"

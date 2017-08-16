@@ -1,19 +1,23 @@
-<a-scene physics vr-mode-ui="enabled: false">
+<a-scene
+  vr-mode-ui="enabled: false"
+  inspector="url: https://unpkg.com/aframe-inspector@0.6.x/dist/aframe-inspector.js"
+>
   <!-- camera -->
-  <a-entity rotation="-45 45 0">
+  <a-entity postion="0 0 1" rotation="-85 0 0">
     <a-entity
-      position="0 0 1600"
+      position="0 0 0.67"
       raycaster="
-        near: 1000.0;
-        far: 4000.0;
+        near: 0.1;
+        far: 2.5;
         interval: 0;
+        showLine: true;
       "
-      2d-cursor
-      crawling-cursor
+      screen-cursor
+      crawling-cursor="offset: 0.001"
       camera="
-        fov: 0.5;
-        near: 1000.0;
-        far: 4000.0;
+        fov: 60;
+        near: 0.1;
+        far: 2;
         userHeight: 0.0;
         zoom: 1.0;
       "
@@ -21,31 +25,22 @@
   </a-entity>
 
   <!-- cursor -->
-  <a-cursor scale="20 20 1"></a-cursor>
+  <a-cursor scale="1 1 1"></a-cursor>
 
-  <!-- floor -->
-  <a-plane width="10" height="10" rotation="-90 0 0" color="#585858" static-body></a-plane>
+  <!-- mat -->
+  <a-plane width="1" height="0.67" rotation="-90 0 0" color="#585858"></a-plane>
 
-  <!-- box -->
-  <a-box position="0 0.5 0" color="#66eee9" static-body></a-box>
-
-  <!-- physical object -->
-  <a-icosahedron
-    highlight-on-hover="#eeeeee"
-    position="-2 4 -2"
-    color="#ee6666"
-    material="flatShading: true"
-    dynamic-body="shape: hull"
-  ></a-icosahedron>
-
-  <!-- rotating sign -->
-  <a-text
-    rotation-engine="rpm: 6"
-    position="0 2 0"
-    wrap-count="11"
-    width="4"
-    value="Hello, world"
-    align="center"
-    side="double"
-  ></a-text>
+  <!-- card -->
+  <a-entity
+    id="card"
+    position="0 0.01 0.2"
+    rotation="-90 0 0"
+    geometry="
+      primitive: plane;
+      width: 0.0635;
+      height: 0.0889;
+    "
+    material="
+    "
+  ></a-entity>
 </a-scene>

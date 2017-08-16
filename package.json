@@ -31,7 +31,6 @@
   },
   "dependencies": {
     "aframe": "^0.6.1",
-    "aframe-crawling-cursor": "^1.0.7",
-    "aframe-physics-system": "^1.4.2"
+    "aframe-crawling-cursor": "https://github.com/gregfagan/aframe-crawling-cursor"
   }
 }
