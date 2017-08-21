@@ -29,6 +29,10 @@ export default {
         test: /.html$/,
         use: 'html-loader?interpolate',
       },
+      {
+        test: /.glsl$/,
+        loader: 'raw-loader'
+      },
     ],
   },
   plugins: [
