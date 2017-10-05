@@ -12,6 +12,11 @@ registerComponent('screen-cursor', {
     this.pointerPosition = new Vector2()
     this.canvasRect = null
     this.eventListeners = null
+
+    this.el.sceneEl.addEventListener(
+      'renderstart',
+      this.generateEventListeners.bind(this),
+    )
   },
 
   remove() {
@@ -31,15 +36,6 @@ registerComponent('screen-cursor', {
     const { sceneEl } = el
     const { canvas } = sceneEl
 
-    // If the canvas isn't initialized yet, defer this task to the future
-    if (!canvas) {
-      sceneEl.addEventListener(
-        'render-target-loaded',
-        this.addEventListeners.bind(this),
-      )
-      return
-    }
-
     // prettier-ignore
     this.eventListeners = [
       { target: window, event: 'resize', cb: this.getCanvasRect.bind(this) },
@@ -54,12 +50,12 @@ registerComponent('screen-cursor', {
     ]
 
     this.getCanvasRect()
+    this.addEventListeners()
   },
 
   addEventListeners() {
-    if (!this.eventListeners) {
-      this.generateEventListeners()
-      if (!this.eventListeners) return
+    if (!this.eventListeners || this.eventListeners.length === 0) {
+      return
     }
 
     this.eventListeners.forEach(({ target, event, cb }) => {
@@ -99,10 +95,7 @@ registerComponent('screen-cursor', {
         .applyQuaternion(quaternion)
         .normalize()
 
-      // TODO: the second form here should be more performant, but it exposes a type
-      // checking bug in the AFrame Component `buildData` code. Explore further.
-      el.setAttribute('raycaster', 'direction', newAttribute.direction)
-      // el.setAttribute('raycaster', newAttribute)
+      el.setAttribute('raycaster', newAttribute)
     }
   })(),
 
