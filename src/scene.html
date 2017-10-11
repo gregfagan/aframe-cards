@@ -1,45 +1,16 @@
-<a-scene
-  vr-mode-ui="enabled: false"
->
-  <!-- inspector="url: https://unpkg.com/aframe-inspector@0.6.x/dist/aframe-inspector.js" -->
+<a-scene vr-mode-ui="enabled: false" physics="debug: false; gravity: 0;">
   <!-- camera -->
   <a-entity postion="0 0 1" rotation="-85 0 0">
-    <a-entity
-      position="0 0 0.67"
-      raycaster="
-        near: 0.1;
-        far: 2.5;
-        interval: 0;
-        showLine: true;
-      "
-      screen-cursor
-      crawling-cursor="offset: 0.001"
-      camera="
-        fov: 60;
-        near: 0.1;
-        far: 2;
-        userHeight: 0.0;
-        zoom: 1.0;
-      "
-    ></a-entity>
+    <a-entity position="0 0 0.67" raycaster="near: 0.1; far: 2.5; interval: 0;" cursor="rayOrigin: mouse"
+      camera="fov: 60; near: 0.1; far: 2; userHeight: 0.0; zoom: 1.0;"></a-entity>
   </a-entity>
 
-  <!-- cursor -->
-  <a-cursor scale="1 1 1"></a-cursor>
-
   <!-- mat -->
-  <a-plane width="1" height="0.67" rotation="-90 0 0" color="#585858"></a-plane>
+  <a-box static-body position="0 -0.05 0" width="1" height="0.67" depth="0.1" rotation="-90 0 0"
+    color="#585858"></a-box>
 
   <!-- card -->
-  <a-entity
-    id="card"
-    position="0 0.5 0.025"
-    rotation="-85 0 0"
-    geometry="
-      primitive: plane;
-      width: 0.0635;
-      height: 0.0889;
-    "
-    card-material
-  ></a-entity>
+  <a-entity id="card" dynamic-body="mass: 0.0016" position="0 0.5 0.025" rotation="-85 0 0"
+    geometry="primitive: plane; width: 0.0635; height: 0.0889;" card-material="color: skyblue"
+    draggable></a-entity>
 </a-scene>

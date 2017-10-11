@@ -12,7 +12,7 @@ export default {
   output: {
     filename: '[name].[chunkhash].js',
     publicPath: '/aframe-cards/',
-    path: path.resolve(__dirname, 'build'),
+    path: path.resolve(__dirname, 'build')
   },
   module: {
     rules: [
@@ -22,18 +22,18 @@ export default {
         loader: 'babel-loader',
         options: {
           presets: ['env'],
-          plugins: ['transform-object-rest-spread'],
-        },
+          plugins: ['transform-object-rest-spread']
+        }
       },
       {
         test: /.html$/,
-        use: 'html-loader?interpolate',
+        use: 'html-loader?interpolate'
       },
       {
         test: /.glsl$/,
         loader: 'raw-loader'
-      },
-    ],
+      }
+    ]
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -42,14 +42,14 @@ export default {
       // by aframe preference, inject javascript to head;
       // initialion logic goes in components.
       // scene contents are injected at build time
-      inject: 'head',
+      inject: 'head'
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       minChunks: module =>
-        module.context && module.context.indexOf('node_modules') !== -1,
+        module.context && module.context.indexOf('node_modules') !== -1
     }),
-    new webpack.optimize.CommonsChunkPlugin({ name: 'manifest' }),
+    new webpack.optimize.CommonsChunkPlugin({ name: 'manifest' })
   ],
 
   // Enable source mapping
@@ -60,9 +60,9 @@ export default {
   devServer: remote
     ? {
         host: '0.0.0.0',
-        allowedHosts: ['localhost', hostAddress()],
+        allowedHosts: ['localhost', hostAddress()]
       }
     : {
-        host: 'localhost',
-      },
+        host: 'localhost'
+      }
 }
