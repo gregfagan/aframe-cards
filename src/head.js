@@ -5,3 +5,4 @@ import 'aframe-physics-system'
 
 import './components'
 import './primitives'
+import './shaders'
