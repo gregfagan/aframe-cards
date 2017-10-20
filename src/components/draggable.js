@@ -29,17 +29,17 @@ class DragEventsObservable {
     // The logic to calculate new position values assumes the ray is being
     // updated externally by the cursor component.
     return mouseDownsEvents.switchMap(event => {
-      const { intersection, target, cursorEl } = event.detail
+      const { intersection, cursorEl } = event.detail
       const where = intersection.point
       const { ray } = cursorEl.components.raycaster.raycaster
 
       // Construct a 2D plane that restricts the dragging motion. Currently
       // local Z of the object being dragged, but other strategies (parallel
       // to the camera, parallel to the ground) come to mind.
-      const planeNormal = target.object3D
+      const normalToCamera = cursorEl.object3D
         .localToWorld(new THREE.Vector3(0, 0, 1))
         .normalize()
-      const plane = new THREE.Plane(planeNormal, -1 * where.length())
+      const plane = new THREE.Plane(normalToCamera, -1 * where.length())
 
       const dragEvents = mouseMoveEvents
         .takeUntil(mouseUpEvents)
@@ -54,19 +54,77 @@ class DragEventsObservable {
 export default registerComponent('draggable', {
   init() {
     const { el } = this
-    const { sceneEl } = el
     this.dragEvents = new DragEventsObservable(el, dragEvent => {
-      const grabberEl = document.createElement('a-grabber')
-      sceneEl.appendChild(grabberEl)
+      let grabberEl
+      let detachGrabber
       return dragEvent.do({
-        next: whereNow => grabberEl.setAttribute('position', whereNow),
-        complete: () => sceneEl.removeChild(grabberEl)
+        next: whereNow => {
+          if (!grabberEl) {
+            grabberEl = this.createGrabber(whereNow)
+            detachGrabber = this.attachGrabber(grabberEl)
+          }
+
+          grabberEl.setAttribute('position', whereNow)
+          grabberEl.components['dynamic-body'].syncToPhysics()
+        },
+        complete: () => detachGrabber(),
+        error: err => {
+          detachGrabber()
+          console.error(err)
+        }
       })
     })
   },
 
+  createGrabber(where) {
+    const { el } = this
+    const grabberEl = document.createElement('a-entity')
+
+    // TODO: why doesn't this version work?
+    // const grabberEl = document.createElement('a-grabber')
+
+    grabberEl.setAttribute('position', where)
+
+    grabberEl.setAttribute('geometry', {
+      primitive: 'sphere',
+      segmentsWidth: 8,
+      segmentsHeight: 8,
+      radius: 0.005
+    })
+
+    grabberEl.setAttribute('dynamic-body', {
+      mass: 0
+    })
+
+    const localGrabberPoint = where.clone()
+    el.object3D.worldToLocal(localGrabberPoint)
+    grabberEl.setAttribute('constraint', {
+      type: 'pointToPoint',
+      collideConnected: false,
+      target: `#${el.id}`,
+      targetPivot: localGrabberPoint
+    })
+
+    // grabberEl.setAttribute('target', `#${el.id}`)
+    // grabberEl.setAttribute('target-pivot', localGrabberPoint)
+
+    return grabberEl
+  },
+
+  // returns function detachGrabber: () => undefined; call to clean up
+  attachGrabber(grabberEl) {
+    const { el } = this
+    const { sceneEl, body } = el
+    sceneEl.appendChild(grabberEl)
+    body.velocity.setZero()
+    body.angularVelocity.setZero()
+    return () => sceneEl.removeChild(grabberEl)
+  },
+
   play() {
-    this.subscription = this.dragEvents.subscribe()
+    this.subscription = this.dragEvents.subscribe(() => {
+      this.el.sceneEl.systems.physics.driver.world.gravity.set(0, -0.5, 0)
+    })
   },
 
   pause() {

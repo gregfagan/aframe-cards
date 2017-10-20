@@ -4,16 +4,17 @@ import fragmentShader from '../shaders/fragment.glsl'
 
 export default registerComponent('card-material', {
   schema: {
-    color: { type: 'color', default: 'black' },
+    color: { type: 'color', default: 'black' }
   },
 
   init() {
     this.material = new THREE.ShaderMaterial({
       uniforms: {
-        color: { type: 'c', value: new THREE.Color(this.data.color) },
+        color: { type: 'c', value: new THREE.Color(this.data.color) }
       },
       vertexShader,
       fragmentShader,
+      side: THREE.DoubleSide
     })
 
     this.applyToMesh()
@@ -29,5 +30,5 @@ export default registerComponent('card-material', {
     if (mesh) {
       mesh.material = this.material
     }
-  },
+  }
 })
