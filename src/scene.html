@@ -18,7 +18,7 @@
          height="0.67"
          depth="0.1"
          static-body
-         color="#888888"></a-box>
+         color="#BBBBBB"></a-box>
 
   <a-entity id="card"
             position="0 0.5 0.025"
@@ -27,7 +27,8 @@
             material="shader: void; side: double"
             dynamic-body="mass: 1; linearDamping: 0.1 angularDamping: 0.5;"
             plane-body-thickness="0.0125"
-            draggable>
+            grabbable
+            only-grab-once>
   </a-entity>
 
 </a-scene>

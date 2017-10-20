@@ -1,4 +1,4 @@
-import { registerComponent, THREE } from 'aframe'
+import { THREE } from 'aframe'
 import { Observable } from 'rxjs'
 
 // Given an A-Frame element which is expected to receive events from a
@@ -12,7 +12,7 @@ import { Observable } from 'rxjs'
 // follow the inner drag events, as the subscription is handled by the
 // outer switchMap automatically.
 //
-class DragEventsObservable {
+export default class CursorDragObserver {
   constructor(el, project = x => x) {
     // Drag Events are built on top of A-Frame cursor's mouse events,
     // though it does not send move events, so we take them from the
@@ -50,90 +50,3 @@ class DragEventsObservable {
     })
   }
 }
-
-export default registerComponent('draggable', {
-  init() {
-    const { el } = this
-    this.dragEvents = new DragEventsObservable(el, dragEvent => {
-      let grabberEl
-      let detachGrabber
-      return dragEvent.do({
-        next: whereNow => {
-          if (!grabberEl) {
-            grabberEl = this.createGrabber(whereNow)
-            detachGrabber = this.attachGrabber(grabberEl)
-          }
-
-          grabberEl.setAttribute('position', whereNow)
-          grabberEl.components['dynamic-body'].syncToPhysics()
-        },
-        complete: () => detachGrabber(),
-        error: err => {
-          detachGrabber()
-          console.error(err)
-        }
-      })
-    })
-  },
-
-  createGrabber(where) {
-    const { el } = this
-    const grabberEl = document.createElement('a-entity')
-
-    // TODO: why doesn't this version work?
-    // const grabberEl = document.createElement('a-grabber')
-
-    grabberEl.setAttribute('position', where)
-
-    grabberEl.setAttribute('geometry', {
-      primitive: 'sphere',
-      segmentsWidth: 8,
-      segmentsHeight: 8,
-      radius: 0.005
-    })
-
-    grabberEl.setAttribute('dynamic-body', {
-      mass: 0
-    })
-
-    const localGrabberPoint = where.clone()
-    el.object3D.worldToLocal(localGrabberPoint)
-    grabberEl.setAttribute('constraint', {
-      type: 'pointToPoint',
-      collideConnected: false,
-      target: `#${el.id}`,
-      targetPivot: localGrabberPoint
-    })
-
-    // grabberEl.setAttribute('target', `#${el.id}`)
-    // grabberEl.setAttribute('target-pivot', localGrabberPoint)
-
-    return grabberEl
-  },
-
-  // returns function detachGrabber: () => undefined; call to clean up
-  attachGrabber(grabberEl) {
-    const { el } = this
-    const { sceneEl, body } = el
-    sceneEl.appendChild(grabberEl)
-    body.velocity.setZero()
-    body.angularVelocity.setZero()
-    return () => sceneEl.removeChild(grabberEl)
-  },
-
-  play() {
-    this.subscription = this.dragEvents.subscribe(() => {
-      this.el.sceneEl.systems.physics.driver.world.gravity.set(0, -0.5, 0)
-    })
-  },
-
-  pause() {
-    this.subscription.unsubscribe()
-  },
-
-  remove() {
-    if (this.subscription) {
-      this.subscription.unsubscribe()
-    }
-  }
-})

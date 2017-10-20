@@ -6,10 +6,9 @@ import { registerShader } from 'aframe'
 const contextRequire = require.context('.', false, /^.*\.glsl/)
 for (const shaderFile of contextRequire.keys()) {
   const shaderName = /\.\/(.*)\.glsl/i.exec(shaderFile)[1]
-  console.log(shaderName)
   registerShader(shaderName, {
     schema: {
-      color: { type: 'color', is: 'uniform', default: 'black' },
+      color: { type: 'color', is: 'uniform', default: '#333333' },
       opacity: { type: 'number', is: 'uniform', default: 1.0 }
     },
     fragmentShader: contextRequire(shaderFile)

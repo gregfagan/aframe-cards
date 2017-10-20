@@ -1,18 +1,36 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><%= htmlWebpackPlugin.options.title %></title>
-    <style>
-      * { padding: 0px; margin: 0px; }
-      body { overflow: hidden; background-color: white; }
-      canvas { -webkit-tap-highlight-color: rgba(0,0,0,0); cursor: pointer; }
-    </style>
-  </head>
-  <body>
-    <div id="app">
-      <%= require('../src/scene.html') %>
-    </div>
-  </body>
+
+<head>
+  <meta http-equiv="Content-type"
+        content="text/html; charset=utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    body {
+      overflow: hidden;
+      background-color: #EEEEEE;
+    }
+
+    canvas {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <%= require('../src/scene.html') %>
+  </div>
+</body>
+
 </html>
