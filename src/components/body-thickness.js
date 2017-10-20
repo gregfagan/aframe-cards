@@ -16,7 +16,7 @@ import { registerComponent, THREE } from 'aframe'
 // entity with different geometry to use for collision.
 //
 
-export default registerComponent('plane-body-thickness', {
+export default registerComponent('body-thickness', {
   dependencies: ['dynamic-body'],
   schema: { type: 'number', default: 0.2 },
   init() {
