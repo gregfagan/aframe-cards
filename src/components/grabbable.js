@@ -5,73 +5,65 @@ export default registerComponent('grabbable', {
   init() {
     const { el } = this
     this.dragEvents = new CursorDragObserver(el, dragEvent => {
-      let grabberEl
-      let detachGrabber
+      let grabberState
       return dragEvent.do({
         next: whereNow => {
-          if (!grabberEl) {
-            grabberEl = this.createGrabber(whereNow)
-            detachGrabber = this.attachGrabber(grabberEl)
+          if (!grabberState) {
+            grabberState = this.attachGrabber(whereNow)
           }
 
-          grabberEl.setAttribute('position', whereNow)
-          grabberEl.components['dynamic-body'].syncToPhysics()
+          const body = grabberState.el.components['dynamic-body']
+          if (body) {
+            grabberState.el.setAttribute('position', whereNow)
+            body.syncToPhysics()
+          }
         },
-        complete: () => detachGrabber(),
+        complete: () => grabberState.detach(),
         error: err => {
-          detachGrabber()
+          grabberState.detach()
           console.error(err)
         }
       })
     })
   },
 
-  createGrabber(where) {
+  attachGrabber(where) {
     const { el } = this
-    const grabberEl = document.createElement('a-entity')
+    const { sceneEl, body } = el
 
-    // TODO: why doesn't this version work?
-    // const grabberEl = document.createElement('a-grabber')
+    // Grabbing immediately halts the element
+    body.velocity.setZero()
+    body.angularVelocity.setZero()
 
+    // A grabber element is created to serve as an attachment point
+    const grabberEl = document.createElement('a-grabber')
     grabberEl.setAttribute('position', where)
 
-    grabberEl.setAttribute('geometry', {
-      primitive: 'sphere',
-      segmentsWidth: 8,
-      segmentsHeight: 8,
-      radius: 0.005
-    })
-
-    grabberEl.setAttribute('dynamic-body', {
-      mass: 0
-    })
-
-    const localGrabberPoint = where.clone()
-    el.object3D.worldToLocal(localGrabberPoint)
+    // Attach the grabber to this grabbable element with a
+    // point to point constraint
+    const targetPivot = where.clone()
+    el.object3D.worldToLocal(targetPivot)
     grabberEl.setAttribute('constraint', {
       type: 'pointToPoint',
       collideConnected: false,
       target: `#${el.id}`,
-      targetPivot: localGrabberPoint
+      targetPivot
     })
 
-    // grabberEl.setAttribute('target', `#${el.id}`)
-    // grabberEl.setAttribute('target-pivot', localGrabberPoint)
-
-    return grabberEl
-  },
-
-  // returns function detachGrabber: () => undefined; call to clean up
-  attachGrabber(grabberEl) {
-    const { el } = this
-    const { sceneEl, body } = el
+    // Append the grabber to the scene
     sceneEl.appendChild(grabberEl)
-    body.velocity.setZero()
-    body.angularVelocity.setZero()
+
+    // Infrom element of the start of grabbing
     el.emit('grab-begin')
-    return () => {
-      sceneEl.removeChild(grabberEl)
-      el.emit('grab-end')
+
+    // Return a state object with a reference to the grabber
+    // element and a detach method
+    return {
+      el: grabberEl,
+      detach: () => {
+        sceneEl.removeChild(grabberEl)
+        el.emit('grab-end')
+      }
     }
   },
 

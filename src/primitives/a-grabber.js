@@ -2,23 +2,15 @@ import { registerPrimitive } from 'aframe'
 
 export default registerPrimitive('a-grabber', {
   defaultComponents: {
-    'dynamic-body': {
-      mass: 0
-    },
-    constraint: {
-      type: 'pointToPoint',
-      collideConnected: false
-    },
     geometry: {
       primitive: 'sphere',
-      segmentsWidth: 8,
-      segmentsHeight: 8,
+      segmentsWidth: 4,
+      segmentsHeight: 4,
       radius: 0.005
+    },
+    visible: 'false',
+    'dynamic-body': {
+      mass: 0
     }
-  },
-
-  mappings: {
-    target: 'constraint.target',
-    'target-pivot': 'constraint.targetPivot'
   }
 })
