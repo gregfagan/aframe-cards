@@ -54,7 +54,7 @@ export default registerComponent('grabbable', {
     sceneEl.appendChild(grabberEl)
 
     // Infrom element of the start of grabbing
-    el.emit('grab-begin')
+    el.emit('grab-begin', { target: el })
 
     // Return a state object with a reference to the grabber
     // element and a detach method
@@ -62,24 +62,22 @@ export default registerComponent('grabbable', {
       el: grabberEl,
       detach: () => {
         sceneEl.removeChild(grabberEl)
-        el.emit('grab-end')
+        el.emit('grab-end', { target: el })
       }
     }
   },
 
   play() {
-    this.subscription = this.dragEvents.subscribe(() => {
-      this.el.sceneEl.systems.physics.driver.world.gravity.set(0, -0.5, 0)
-    })
+    this.subscription = this.dragEvents.subscribe()
   },
 
   pause() {
-    this.subscription.unsubscribe()
-  },
-
-  remove() {
     if (this.subscription) {
       this.subscription.unsubscribe()
     }
+  },
+
+  remove() {
+    this.pause()
   }
 })

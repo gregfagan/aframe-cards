@@ -1,4 +1,4 @@
-import { registerComponent, THREE } from 'aframe'
+import { registerComponent } from 'aframe'
 
 //
 // THIS IS A HACK
@@ -19,30 +19,36 @@ import { registerComponent, THREE } from 'aframe'
 export default registerComponent('body-thickness', {
   dependencies: ['dynamic-body'],
   schema: { type: 'number', default: 0.2 },
+
   init() {
-    this.el.addEventListener('body-loaded', () => {
-      const { el, data: thickness } = this
-      const { body, components, sceneEl } = el
-      const bodyComponent = components['dynamic-body']
-      const { wireframe } = bodyComponent
+    if (this.el.body) {
+      this.adjustBody()
+    }
+    this.el.addEventListener('body-loaded', () => this.adjustBody())
+  },
 
-      const halfThickness = thickness / 2
+  adjustBody() {
+    const { el, data: thickness } = this
+    const { body, components, sceneEl } = el
+    const bodyComponent = components['dynamic-body']
+    const { wireframe } = bodyComponent
 
-      for (const shape of body.shapes) {
-        if (shape.halfExtents) {
-          const newExtents = shape.halfExtents.clone()
-          newExtents.z = halfThickness
-          const newShape = new CANNON.Box(newExtents)
-          body.shapes.length = 0
-          body.addShape(newShape)
+    const halfThickness = thickness / 2
 
-          if (wireframe) {
-            sceneEl.object3D.remove(wireframe)
-            bodyComponent.createWireframe(body, newShape)
-            sceneEl.object3D.add(bodyComponent.wireframe)
-          }
+    for (const shape of body.shapes) {
+      if (shape.halfExtents) {
+        const newExtents = shape.halfExtents.clone()
+        newExtents.z = halfThickness
+        const newShape = new CANNON.Box(newExtents)
+        body.shapes.length = 0
+        body.addShape(newShape)
+
+        if (wireframe) {
+          sceneEl.object3D.remove(wireframe)
+          bodyComponent.createWireframe(body, newShape)
+          sceneEl.object3D.add(bodyComponent.wireframe)
         }
       }
-    })
+    }
   }
 })

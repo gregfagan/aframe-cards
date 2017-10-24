@@ -1,34 +1,31 @@
 <a-scene vr-mode-ui="enabled: false"
-         physics="debug: false; gravity: 0">
+         physics="debug: true; gravity: -0.5; restitution: 0.1;">
 
-  <a-entity id="camera-joint"
-            postion="0 0 1"
-            rotation="-85 0 0">
-    <a-entity id="camera"
-              position="0 0 0.67"
-              raycaster="near: 0.1; far: 2.5; interval: 0;"
-              cursor="rayOrigin: mouse"
-              camera="fov: 60; near: 0.1; far: 2; userHeight: 0.0; zoom: 1.0;"></a-entity>
-  </a-entity>
+        <a-entity id="camera-joint"
+                  postion="0 0 1"
+                  rotation="-85 0 0">
+                <a-entity id="camera"
+                          position="0 0 0.67"
+                          raycaster="near: 0.1; far: 2.5; interval: 0;"
+                          cursor="rayOrigin: mouse"
+                          camera="fov: 60; near: 0.1; far: 2; userHeight: 0.0; zoom: 1.0;"></a-entity>
+        </a-entity>
 
-  <a-box id="mat"
-         position="0 -0.05 0"
-         rotation="-90 0 0"
-         width="1"
-         height="0.67"
-         depth="0.1"
-         static-body
-         color="#666666"></a-box>
+        <a-box id="mat"
+               position="0 -0.05 0"
+               rotation="-90 0 0"
+               width="1"
+               height="0.67"
+               depth="0.1"
+               static-body
+               color="#666666"></a-box>
 
-  <a-entity id="card"
-            position="0 0.5 0.025"
-            rotation="-85 0 0"
-            geometry="primitive: plane; width: 0.0635; height: 0.0889;"
-            material="shader: the-wall; side: double"
-            dynamic-body="mass: 1; linearDamping: 0.1 angularDamping: 0.5;"
-            body-thickness="0.0125"
-            grabbable
-            only-grab-once>
-  </a-entity>
+        <a-entity id="deck"
+                  deck="cards: void, justice, strength, death, the-wall"></a-entity>
+
+        <a-grabber id="hand"
+                   position="0 0.5 0.025"
+                   rotation="-85 0 0"></a-grabber>
+
 
 </a-scene>

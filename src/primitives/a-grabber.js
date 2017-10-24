@@ -2,15 +2,10 @@ import { registerPrimitive } from 'aframe'
 
 export default registerPrimitive('a-grabber', {
   defaultComponents: {
-    geometry: {
-      primitive: 'sphere',
-      segmentsWidth: 4,
-      segmentsHeight: 4,
-      radius: 0.005
+    'static-body': {
+      shape: 'sphere',
+      sphereRadius: 0.002
     },
-    visible: 'false',
-    'dynamic-body': {
-      mass: 0
-    }
+    grabber: true
   }
 })
