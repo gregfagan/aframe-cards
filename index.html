@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-type"
+        content="text/html; charset=utf-8" />
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1" />
+  <title>
+    aframe-cards
+  </title>
+  <style>
+    * {
+      padding: 0px;
+      margin: 0px;
+    }
+
+    body {
+      overflow: hidden;
+      background-color: #999999;
+    }
+
+    canvas {
+      -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+      cursor: pointer;
+    }
+  </style>
+<script type="text/javascript" src="/aframe-cards/manifest.9f8bc821e2af0540c81c.js"></script><script type="text/javascript" src="/aframe-cards/vendor.6cc817d81d252e049703.js"></script><script type="text/javascript" src="/aframe-cards/main.8c7737934a45d12bb285.js"></script></head>
+
+<body>
+  <div id="app">
+    <a-scene vr-mode-ui="enabled: false" physics="debug: true; gravity: -0.5; restitution: 0.1;"> <a-entity id=camera-joint postion="0 0 1" rotation="-85 0 0"> <a-entity id=camera position="0 0 0.67" raycaster="near: 0.1; far: 2.5; interval: 0;" cursor="rayOrigin: mouse" camera="fov: 60; near: 0.1; far: 2; userHeight: 0.0; zoom: 1.0;"></a-entity> </a-entity> <a-box id=mat position="0 -0.05 0" rotation="-90 0 0" width=1 height=0.67 depth=0.1 static-body color=#666666></a-box> <a-entity id=deck deck="cards: void, justice, strength, death, the-wall"></a-entity> <a-grabber id=hand position="0 0.5 0.025" rotation="-85 0 0"></a-grabber> </a-scene>
+  </div>
+</body>
+
+</html>
